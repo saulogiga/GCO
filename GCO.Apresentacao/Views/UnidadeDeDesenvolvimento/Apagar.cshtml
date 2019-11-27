@@ -1,0 +1,125 @@
+﻿@model GCO.Dominio.Entidade.UnidadeDeDesenvolvimento
+
+@{
+    ViewBag.Title = "DM - Unidade de Desenvolvimento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.ActionLink("Voltar", "Listar",null,new { @class = "BtnVoltar", title = "Voltar" })
+
+<h2>Apagar Unidade de Desenvolvimento</h2>
+
+<h3>Deseja realmente apagar o arquivo?</h3>
+
+<fieldset>
+    <legend>Unidade de Desenvolvimento</legend>
+    <div>
+        <div class="Esq">
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.IdTipoUnidadeDesenvolvimento)
+    </div>
+    <div class="display-field">
+        @Html.TextBoxFor(model => model.TipoDeUnidadeDeDesenvolvimento.Nome, new { disabled = "disabled", @readonly = "readonly"} )
+    </div>
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.IdProjeto)
+    </div>
+    <div class="display-field">
+        @Html.TextBoxFor(model => model.Projeto.Nome, new { disabled = "disabled", @readonly = "readonly"} )
+    </div>
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.NumeroTicket)
+    </div>
+    <div class="display-field">
+        @Html.TextBoxFor(model => model.NumeroTicket, new { disabled = "disabled", @readonly = "readonly"} )
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.NumeroSolicitacao)
+    </div>
+    <div class="display-field">
+        @Html.TextBoxFor(model => model.NumeroSolicitacao, new { disabled = "disabled", @readonly = "readonly"} )
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.DataPublicacao)
+    </div>
+    <div class="display-field">
+        @Html.TextBoxFor(model => model.DataPublicacao, new { disabled = "disabled", @readonly = "readonly"} )
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Solicitante.UserName)
+    </div>
+    <div class="display-field">
+        @Html.TextBoxFor(model => model.Solicitante.UserName, new { disabled = "disabled", @readonly = "readonly"} )
+    </div>
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.IdStatusUnidadeDesenvolvimento)
+    </div>
+    <div class="display-field">
+        @Html.TextBoxFor(model => model.StatusUnidadeDesenvolvimento.Nome, new { disabled = "disabled", @readonly = "readonly"})
+    </div>
+    </div>
+        <div class="Esq50">
+                <div class="editor-label">
+                    <label>Servidor de banco de Dados</label>
+                </div>
+                <div class="editor-field">
+                    <input id="txtServidorBanco" name="txtServidorBanco" value="@ViewBag.ServidorBanco" disabled = "disabled" readonly = "readonly" />
+                </div>
+                <div class="editor-label">
+                    <label>Nome do banco de Dados</label>
+                </div>
+                <div class="editor-field">
+                    <input id="txtNomeBanco" name="txtNomeBanco" value="@ViewBag.NomeBanco" disabled = "disabled" readonly = "readonly" />
+                </div>
+                <div class="editor-label">
+                    <label>Desenvolvedores:</label>
+                </div>
+                <div class="editor-label">
+                    <div style="padding: 5px; border: 1px solid #DDD; background: #FFF; overflow-y: scroll; height: 200px;">
+                    @foreach (var item in ViewBag.Desenvolvedores)
+                    {
+                        if(Model.Desenvolvedores.Where(u => u.UserId == item.UserId).Count() == 1){
+                            <input type="checkbox" id="chkDesenvolvedor_@item.UserId" value="@item.UserName" name="chkDesenvolvedor_@item.UserId" checked="checked" disabled="disabled" />  @item.UserName<br />
+                        }else{
+                            <input type="checkbox" id="chkDesenvolvedor_@item.UserId" value="@item.UserName" name="chkDesenvolvedor_@item.UserId" disabled="disabled" />  @item.UserName<br />
+                        }
+                        
+                    }
+                    </div>
+                </div>
+            </div>
+            <div class="Esq50">
+                <div class="editor-label">
+                        @Html.LabelFor(model => model.TeamProject)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.TeamProject, new { disabled="disabled" })
+                    </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.NomeBuild)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.NomeBuild, new { disabled="disabled" })
+                    </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.CaminhoPublish)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.CaminhoPublish, new { disabled="disabled" })
+                    </div>
+             </div>
+            <div style="clear:both;"></div>
+    </div>
+
+</fieldset>
+@using (Html.BeginForm())
+{
+    <p>
+        <input type="submit" value="Apagar" />
+        |
+        @Html.ActionLink("Voltar", "Listar")
+    </p>
+}

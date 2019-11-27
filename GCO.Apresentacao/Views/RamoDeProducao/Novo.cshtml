@@ -1,0 +1,79 @@
+﻿@model GCO.Dominio.Entidade.RamoDeProducao
+
+@{
+    ViewBag.Title = "DM - Versão de Produção";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.ActionLink("Voltar", "Listar",null,new { @class = "BtnVoltar", title = "Voltar" })
+
+<h2>Criar Versão de Produção</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(false)
+
+    <fieldset>
+        <legend>Ramo De Produção</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdProjeto)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.IdProjeto, (SelectList)ViewBag.Projeto, "Selecione", new {  })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdModulo)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.IdModulo, (SelectList)ViewBag.Modulo, "Selecione", new {  })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdRepositorio)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.IdRepositorio, (SelectList)ViewBag.Repositorio, "Selecione", new {  })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Versao)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Versao)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DataPublicacao)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.DataPublicacao,new { @class="date" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Solicitacao)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Solicitacao)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Comentario)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Comentario)
+        </div>
+
+        <p>
+            <input type="submit" value="Criar" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Voltar", "Listar")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

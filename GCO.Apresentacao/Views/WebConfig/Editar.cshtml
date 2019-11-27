@@ -1,0 +1,74 @@
+﻿@model GCO.Dominio.Entidade.WebConfig
+
+@{
+    ViewBag.Title = "DM - Unidade de Desenvolvimento - WebConfig";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.ActionLink("Voltar", "Listar",new { idUnidadeDesenvolvimento= ViewBag.IdUnidadeDesenvolvimento },new { @class = "BtnVoltar", title = "Voltar" })
+
+<h2>Editar</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(false)
+
+    <fieldset>
+        <legend>WebConfig</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdModulo)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.IdModulo, (SelectList)ViewBag.Modulo, "Selecione", new { style = "width: 190px;" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Acao)
+        </div>
+        <div class="editor-field">
+             <select data-val="true" data-val-required="O campo Ação é obrigatório" id="Acao" name="Acao" style="width: 190px;">
+                <option value="">Selecione</option>
+                @if(Model.Acao == 1){
+                    <option value="1" selected="selected">Incluir</option>
+                }else{
+                    <option value="1">Incluir</option>
+                }
+                 @if(Model.Acao == 2){
+                    <option value="2"  selected="selected">Alterar</option>
+                }else{
+                    <option value="2">Alterar</option>
+                }
+                 @if(Model.Acao == 3){
+                    <option value="3"  selected="selected">Excluir</option>
+                }else{
+                    <option value="3">Excluir</option>
+                }
+            </select>
+        </div> 
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdTipoWebConfig)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.IdTipoWebConfig, (SelectList)ViewBag.TipoDeWebConfig, "Selecione", new { style = "width: 190px;" })
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Valor)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Valor, new { style = "width:500px;" })
+        </div>
+
+        <input type="submit" value="Alterar" />
+
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Voltar", "Listar", new { idUnidadeDesenvolvimento = ViewBag.IdUnidadeDesenvolvimento }, null)
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

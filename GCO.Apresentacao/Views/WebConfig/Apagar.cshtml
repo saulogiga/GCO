@@ -1,0 +1,58 @@
+﻿@model GCO.Dominio.Entidade.WebConfig
+
+@{
+    ViewBag.Title = "DM - Unidade de Desenvolvimento - WebConfig";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.ActionLink("Voltar", "Listar",new { idUnidadeDesenvolvimento= ViewBag.IdUnidadeDesenvolvimento },new { @class = "BtnVoltar", title = "Voltar" })
+
+<h2>Apagar WebConfig</h2>
+
+<h3>Deseja realmente apagar o item de WebConfig?</h3>
+<fieldset>
+    <legend>WebConfig</legend>
+
+    <div>
+        <div class="Esq">
+            <div class="editor-label">
+            @Html.LabelFor(model => model.IdModulo)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Modulo.Nome, new { disabled = "disabled", style = "width: 190px;" })
+        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.IdTipoWebConfig)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.TipoDeWebConfig.Nome, new { disabled = "disabled", style = "width: 190px;" })
+            </div>
+        </div>
+        <div class="Esq20">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Valor)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Valor, new { disabled = "disabled", style = "width: 190px;" })
+            </div>
+        </div>
+        <div class="Esq20">
+            <div class="editor-label">
+                <label>Usuário</label>
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Usuario.UserName, new { disabled = "disabled", style = "width: 190px;" })
+            </div>
+        </div>
+        <div class="Esq20">
+            @using (Html.BeginForm())
+            {
+                <input type="submit" value="Apagar" />
+            }
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Voltar", "Listar", new { idUnidadeDesenvolvimento = ViewBag.IdUnidadeDesenvolvimento }, null)
+</p>

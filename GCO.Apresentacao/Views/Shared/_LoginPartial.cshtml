@@ -1,0 +1,18 @@
+﻿@if (Request.IsAuthenticated) {
+    <text>
+        Seja Bem Vindo, @User.Identity.Name.ToUpper()!&nbsp;&nbsp;&nbsp;&nbsp;
+        @if (User.IsInRole("GCO")){
+            @Html.ActionLink("Cadastrar Novo Usuário", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })
+        }
+        @Html.ActionLink("Trocar Senha", "Manage", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+        }
+    </text>
+} else {
+    <ul>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

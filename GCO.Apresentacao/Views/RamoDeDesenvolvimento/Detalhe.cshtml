@@ -1,0 +1,70 @@
+﻿@model GCO.Dominio.Entidade.RamoDeDesenvolvimento
+
+@{
+    ViewBag.Title = "DM - Versão de Desenvolvimento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.ActionLink("Voltar", "Detalhes","UnidadeDeDesenvolvimento",new { idUnidadeDesenvolvimento= Model.IdUnidadeDesenvolvimento },new { @class = "BtnVoltar", title = "Voltar" })
+
+<h2>Detalhe da Versão de Desenvolvimento</h2>
+
+<fieldset>
+        <legend>Ramo de Desenvolvimento</legend>
+
+        <div class="editor-label">
+            <div class="Esq"><label>Branch: </label></div>
+            <div class="Esq10">@Html.RadioButtonFor(model => model.Branch,"True", new {disabled="disabled", style="width: 20px;"})Sim</div>
+            <div class="Esq10">@Html.RadioButtonFor(model => model.Branch,"False", new {disabled="disabled", style="width: 20px;"})Não</div>
+            <div style="clear:both; margin-bottom: 10px;"></div>
+        </div>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdRamoProducao)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.RamoDeProducao.Ramo, new {disabled="disabled", style="width: 511px;" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdModulo)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Modulo.Nome, new {disabled="disabled",  style="width: 511px;" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdRepositorio)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Repositorio.Nome, new {disabled="disabled",  style="width: 511px;" })
+        </div>
+        
+        <div id="DivTipoDeVersao">
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Versao)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Versao, new { disabled="disabled", style="width: 500px;" })
+            </div>
+
+        </div>
+
+        <div class="editor-label">
+            <label>Caminho</label>
+        </div>
+        <div class="editor-field">
+           @* <input type="text"  id="txtCaminho" readonly="True" style="font-size: 10px; width: 403px;" />*@
+            @Html.TextBoxFor(model => model.Caminho, new {disabled="disabled",  style="width: 500px;" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Comentario)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Comentario, new {disabled="disabled",  style="width: 500px;" })
+        </div>
+<p>
+    @Html.ActionLink("Voltar", "Detalhes","UnidadeDeDesenvolvimento",new { idUnidadeDesenvolvimento= Model.IdUnidadeDesenvolvimento },null)
+</p>

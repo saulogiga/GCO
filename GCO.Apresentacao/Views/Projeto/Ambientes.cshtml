@@ -1,0 +1,70 @@
+﻿@model IEnumerable<GCO.Dominio.Entidade.Projeto>
+
+@{
+    ViewBag.Title = "Ambientes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Ambientes dos Produtos</h2>
+<br />
+<div>
+    <div style="float:left;">
+<h3>Aplication BIP</h3>
+
+<table>
+    <tr>
+        <th>
+            Cliente
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ambiente)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Versao)
+        </th>
+    </tr>
+
+@foreach (var item in Model.Where(p => p.IdProjetoPai == 2)) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ambiente)
+        </td>
+        <td style="text-align:center;">
+            @Html.DisplayFor(modelItem => item.Versao)
+        </td>
+    </tr>
+}
+</table>
+</div>
+
+<div style="float:left; margin-left:15px;">
+<h3>Aplication EFox</h3>
+
+<table>
+    <tr>
+        <th>
+            Cliente
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ambiente)
+        </th>
+    </tr>
+
+@foreach (var item in Model.Where(p => p.IdProjetoPai == 37)) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ambiente)
+        </td>
+    </tr>
+}
+
+</table>
+</div>
+<div style="clear:both;"></div>
+ </div>

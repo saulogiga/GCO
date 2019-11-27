@@ -1,0 +1,167 @@
+﻿@model GCO.Dominio.Entidade.UnidadeDeDesenvolvimento
+
+@{
+    ViewBag.Title = "DM - Unidade de Desenvolvimento - Item do Web.Config";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.ActionLink("Voltar", "Listar","UnidadeDeDesenvolvimento",null,new { @class = "BtnVoltar", title = "Voltar" })
+
+<h2>Unidade de Desenvolvimento - Web.Config</h2>
+
+<p>
+    @Html.ActionLink("Cadastrar Novo Item do Web.Config", "Novo", new { idUnidadeDesenvolvimento = Model.IdUnidadeDesenvolvimento }, new { @class = "BtnNew" })
+</p>
+
+@using (Html.BeginForm())
+{
+    <div>
+        <div class="editor-label Esq">
+            @Html.LabelFor(model => model.NumeroTicket)
+        </div>
+        <div class="editor-field Esq5">
+            @Html.DisplayFor(model => model.NumeroTicket)
+        </div>
+        <div class="editor-label Esq20">
+            @Html.LabelFor(model => model.NumeroSolicitacao)
+        </div>
+        <div class="editor-field Esq5">
+            @Html.DisplayFor(model => model.NumeroSolicitacao)
+        </div>
+        <div class="editor-label Esq20">
+            @Html.LabelFor(model => model.Projeto)
+        </div>
+        <div class="editor-field Esq5">
+            @Html.DisplayFor(model => model.Projeto.Nome)
+        </div>
+        <div class="editor-label Esq20">
+            <label>Status</label>
+        </div>
+        <div class="editor-field Esq5">
+            @Html.DisplayFor(model => model.StatusUnidadeDesenvolvimento.Nome)
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+}
+
+<table style="width: 1200px; margin-top: 10px;">
+    <tr>
+        <th style="width: 16px;">
+        </th>
+        <th>Valor
+        </th>
+        <th style="width: 105px;">Tipo
+        </th>
+        <th style="width: 120px;">Usuário
+        </th>
+        <th style="width: 120px;">Última Modificação
+        </th>
+        <th style="width: 18px;"></th>
+        <th style="width: 18px;"></th>
+        <th style="width: 18px;"></th>
+    </tr>
+
+    @foreach (var item in Model.WebConfig.Where(w => w.IsDeleted == false))
+    {
+        <tr>
+            <td>
+                @if (item.Acao == 1)
+                {
+                    <img width="16px" height="16px" src="../Images/1416353236_1.png" title="Inclusão no módulo @item.Modulo.Nome" />
+                }
+                else if (item.Acao == 2)
+                {
+                    <img width="16px" height="16px" src="../Images/1416353204_2.png" title="Alteração no módulo @item.Modulo.Nome"/>
+                }
+                else if (item.Acao == 3)
+                {
+                    <img width="16px" height="16px" src="../Images/1416353239_remove.png" title="Exclusão no módulo @item.Modulo.Nome"/>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Valor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoDeWebConfig.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Usuario.UserName)
+            </td>
+            <td>
+                @if(item.DataAlteracao.HasValue){
+                    @Html.DisplayFor(modelItem => item.DataAlteracao)
+                }
+                else{
+                    @Html.DisplayFor(modelItem => item.DataInclusao)
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Editar", new { IdWebConfig = item.IdWebConfig }, new { @class = "EditGrid", title = "Alterar" })
+            </td>
+            <td>
+                @Html.ActionLink("Detalhe", "Detalhe", new { IdWebConfig = item.IdWebConfig }, new { @class = "DetalheGrid", title = "Detalhe" })
+            <td>
+                @Html.ActionLink("Apagar", "Apagar", new { IdWebConfig = item.IdWebConfig }, new { @class = "DeleteGrid", title = "Excluir" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<br />
+<br />
+
+@if(Model.WebConfig.Where(w => w.IsDeleted == true).Count() > 0){
+<label>Itens apagados:</label>
+<table style="width: 1200px; margin-top: 5px;">
+    <tr>
+        <th style="width: 20px; background: #AAA;">
+        </th>
+        <th style="background: #AAA;">Valor
+        </th>
+        <th style="width: 105px; background: #AAA;">Tipo
+        </th>
+        <th style="width: 120px;background: #AAA;">Usuário
+        </th>
+        <th style="width: 120px;background: #AAA;">Data Exclusão
+        </th>
+    </tr>
+
+    @foreach (var item in Model.WebConfig.Where(w => w.IsDeleted == true))
+    {
+        <tr>
+            <td>
+                @if (item.Acao == 1)
+                {
+                    <img width="16px" height="16px" src="../Images/1416353236_1.png" title="Inclusão no módulo @item.Modulo.Nome" />
+                }
+                else if (item.Acao == 2)
+                {
+                    <img width="16px" height="16px" src="../Images/1416353204_2.png" title="Alteração no módulo @item.Modulo.Nome"/>
+                }
+                else if (item.Acao == 3)
+                {
+                    <img width="16px" height="16px" src="../Images/1416353239_remove.png" title="Exclusão no módulo @item.Modulo.Nome"/>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Valor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoDeWebConfig.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Usuario.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataExclusao)
+            </td>
+        </tr>
+    }
+
+</table>
+}
+<br />
+<div>
+    @Html.ActionLink("Voltar", "Listar", "UnidadeDeDesenvolvimento")
+</div>

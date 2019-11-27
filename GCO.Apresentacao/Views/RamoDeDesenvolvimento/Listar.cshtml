@@ -1,0 +1,214 @@
+﻿@model IEnumerable<GCO.Dominio.Entidade.RamoDeDesenvolvimento>
+
+@{
+    ViewBag.Title = "DM - Versão de Desenvolvimento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+
+</style>
+<script type="text/javascript">
+
+    function FiltrarConsulta() {
+
+        var _projeto = $('#ddlProjeto').val();
+        var _modulo = $('#ddlmodulo').val();
+        var _repositorio = $('#ddlRepositorio').val();
+
+        if (_projeto == null || _projeto == "") { _projeto = 0; }
+        if (_modulo == null || _modulo == "") { _modulo = 0; }
+        if (_repositorio == null || _repositorio == "") { _repositorio = 0; }
+
+
+        $.getJSON('@Url.Action("GetRamoDeDesenvolvimento")', { versao: $('#txtversao').val(), Projeto: _projeto, Modulo: _modulo, Repositorio: _repositorio }, function (data) {
+
+            $("#ListaDeRamoDeDesenvolvimento").empty();
+
+            var itens;
+            itens = "";
+            itens += "<table style='width:99%'> ";
+            itens += "    <tr> ";
+            itens += "        <th style=''>Pacote de Valor</th> ";
+            itens += "        <th style=''>Projeto</th> ";
+            itens += "        <th style=''>Módulo</th> ";
+            itens += "        <th style=';'>Versão</th> ";
+            //itens += "        <th>Caminho</th> ";
+
+            //if (data.Editar == true) {
+            //    itens += "        <th style='width:90px;'></th> ";
+            //} else {
+                itens += "        <th style='width:30px;'></th> ";
+            //}
+            itens += "    </tr> ";
+
+            $(data).each(function (index, ramo) {
+
+                
+                var Versao = ramo.Versao;
+
+                if (Versao == null) { Versao = ""; }
+
+                itens += "    <tr> ";
+                itens += "        <td>" + ramo.UnidadeDeDesenvolvimento.NumeroTicket + "</td> ";
+                itens += "        <td>" + ramo.UnidadeDeDesenvolvimento.Projeto.Nome + "</td> ";
+                itens += "        <td>" + ramo.Modulo.Nome + "</td> ";
+                itens += "        <td>" + ramo.Versao + "</td> ";
+                //itens += "        <td>" + ramo.Caminho + "</td> ";
+
+
+
+                @*if (data.Editar == true) {
+                    itens += "        <td> ";
+                    itens += "            <div class='Esq10'><a class='EditGrid' href='@Url.Action("Editar", "RamoDeProducao")?idRamoProducao=" + ramo.IdRamoProducao + "' title='Alterar'>Editar</a> </div> ";
+                    itens += "            <div class='Esq5'><a class='DetalheGrid' href='@Url.Action("Detalhes", "RamoDeProducao")?idRamoProducao=" + ramo.IdRamoProducao + "' title='Detalhes'>Detalhes</a></div> ";
+                    itens += "            <div class='Esq5'><a class='DeleteGrid' href='@Url.Action("Apagar", "RamoDeProducao")?idRamoProducao=" + ramo.IdRamoProducao + "' title='Excluir'>Apagar</a></div> ";
+                    itens += "            <div style='clear:both;'></div> ";
+                    itens += "        </td> ";
+                } else {*@
+                    itens += "        <td> ";
+                    itens += "            <div class='Esq5'><a class='DetalheGrid' href='@Url.Action("Detalhe", "RamoDeDesenvolvimento")?idRamoDesenvolvimento=" + ramo.IdRamoDesenvolvimento + "' title='Detalhes'>Detalhes</a></div> ";
+                    itens += "            <div style='clear:both;'></div> ";
+                    itens += "        </td> ";
+                //}
+                itens += "    </tr> ";
+
+            });
+
+            itens += "</table> ";
+            $("#ListaDeRamoDeDesenvolvimento").append(itens);
+
+        });
+    }
+
+    $(function () {
+        $('#ddlProjeto').change(function () {
+            FiltrarConsulta();
+        });
+    });
+    $(function () {
+        $('#ddlmodulo').change(function () {
+            FiltrarConsulta();
+        });
+    });
+    $(function () {
+        $('#ddlRepositorio').change(function () {
+            FiltrarConsulta();
+        });
+    });
+    $(function () {
+        $('#txtversao').change(function () {
+            FiltrarConsulta();
+        });
+    });
+
+
+</script>
+
+<div style="margin-top: 10px; margin-bottom: 20px;">
+        @if (User.IsInRole("GCO"))
+        {
+            @Html.ActionLink("Criar Versão", "Novo", null, new { @class = "BtnNew" })
+        }
+    </div>
+<div style="margin-top: 10px;">
+
+    <div class="Esq" style="width: 190px;">
+        <div>
+            <label>Versão:</label>
+        </div>
+        <div>
+            <input id="txtversao" name="txtversao" style="width: 175px;" />
+        </div>
+    </div>
+    <div class="Esq20">
+        <div>
+            <label>Projeto:</label>
+        </div>
+        <div>@Html.DropDownList("ddlProjeto", (SelectList)(SelectList)ViewBag.Projeto, " TODOS ", new { })</div>
+    </div>
+    <div class="Esq20">
+        <div>
+            <label>Módulo:</label>
+        </div>
+        <div>@Html.DropDownList("ddlmodulo", (SelectList)ViewBag.Modulo, " TODOS ", new { })</div>
+    </div>
+    <div class="Esq20">
+        <div>
+            <label>Repositório:</label>
+        </div>
+        <div>@Html.DropDownList("ddlRepositorio", (SelectList)ViewBag.Repositorio, " TODOS ", new { })</div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+
+<div>
+    
+
+    <div id="ListaDeRamoDeDesenvolvimento" style="margin-top: 20px;">
+
+        <table style="width:99%">
+            <tr>
+                <th style="">
+                    Pacote de Valor
+                </th>
+                <th style="">
+                    Projeto
+                </th>
+                <th style="">
+                    @Html.DisplayNameFor(model => model.IdModulo)
+                </th>
+                <th style="">
+                    @Html.DisplayNameFor(model => model.Versao)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.Caminho)
+                </th>*@
+
+               @* @if (User.IsInRole("GCO"))
+                {
+                    <th style="width: 90px;"></th>
+                }
+                else
+                {*@
+                    <th style="width: 30px;"></th>
+                @*}*@
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr style="font-size: 11px;">                    
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnidadeDeDesenvolvimento.NumeroTicket)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnidadeDeDesenvolvimento.Projeto.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Modulo.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Versao)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.Caminho)
+                    </td>*@
+                    <td>
+                        @*@if (User.IsInRole("GCO"))
+                        {
+                            <div class="Esq10">@Html.ActionLink("Editar", "Editar", new { idRamoDesenvolvimento = item.IdRamoDesenvolvimento }, new { @class = "EditGrid", title = "Alterar" }) </div>
+                            <div class="Esq5">@Html.ActionLink("Apagar", "Apagar", new { idRamoDesenvolvimento = item.IdRamoDesenvolvimento }, new { @class = "DeleteGrid", title = "Excluir" })</div>
+                            <div class="Esq5">@Html.ActionLink("Detalhe", "Detalhes", new { idRamoDesenvolvimento = item.IdRamoDesenvolvimento }, new { @class = "DetalheGrid", title = "Detalhe" })</div>
+                            <div style="clear: both;"></div>
+                        }
+                        else
+                        {
+                            *@<div class="Esq5">@Html.ActionLink("Detalhe", "Detalhe", new { idRamoDesenvolvimento = item.IdRamoDesenvolvimento }, new { @class = "DetalheGrid", title = "Detalhe" })</div>
+                            <div style="clear: both;"></div>
+                        @*}*@
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

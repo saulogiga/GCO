@@ -1,0 +1,51 @@
+﻿@model GCO.Dominio.Entidade.Repositorio
+
+@{
+    ViewBag.Title = "DM - Repositório";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.ActionLink("Voltar", "Listar",null,new { @class = "BtnVoltar", title = "Voltar" })
+
+<h2>Criar Repositório</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(false)
+
+    <fieldset>
+        <legend>Repositório</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Nome)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Nome)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Caminho)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Caminho)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdTipoRepositorio)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.IdTipoRepositorio, (SelectList)ViewBag.Repositorio, "Selecione", new {  })
+        </div>
+
+        <p>
+            <input type="submit" value="Criar" />
+        </p>
+    </fieldset>
+}
+
+<div>
+       @Html.ActionLink("Voltar", "Listar")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

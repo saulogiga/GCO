@@ -1,0 +1,252 @@
+﻿@model IEnumerable<GCO.Dominio.Entidade.RamoDeProducao>
+
+@{
+    ViewBag.Title = "DM - Versão de Produção";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+
+</style>
+
+<script type="text/javascript">
+
+    function FiltrarConsulta() {
+
+        var _projeto = $('#ddlProjeto').val();
+        var _modulo = $('#ddlmodulo').val();
+        var _repositorio = $('#ddlRepositorio').val();
+
+        if (_projeto == null || _projeto == "") { _projeto = 0; }
+        if (_modulo == null || _modulo == "") { _modulo = 0; }
+        if (_repositorio == null || _repositorio == "") { _repositorio = 0; }
+
+
+        $.getJSON('@Url.Action("GetRamoDeProducao")', { versao: $('#txtversao').val(), Projeto: _projeto, Modulo: _modulo, Repositorio: _repositorio }, function (data) {
+
+            $("#ListaDeRamoDeProducao").empty();
+
+            var itens;
+            itens = "";
+            itens += "<table style='width:99%'> ";
+            itens += "    <tr> ";
+            itens += "        <th style=''>Projeto</th> ";
+            itens += "        <th style=''>Módulo</th> ";
+            itens += "        <th style='width:80px;'>Publicação</th> ";
+            itens += "        <th style=';'>Versão</th> ";
+            itens += "        <th style=';'>Solicitação</th> ";
+            //itens += "        <th>Caminho</th> ";
+
+            if (data.Editar == true) {
+                itens += "        <th style='width:120px;'></th> ";
+            } else {
+                itens += "        <th style='width:30px;'></th> ";
+            }
+            itens += "    </tr> ";
+
+            $(data.Resultado).each(function (index, ramo) {
+
+                var DataPublicacao = new Date(parseInt(ramo.DataPublicacao.substr(6)));
+                var Versao = ramo.Versao;
+
+                var dia;
+                var mes;
+                var solicitacao;
+
+                if (DataPublicacao.getDate().toString().length == 1) {
+                    dia = '0' + DataPublicacao.getDate().toString();
+                } else {
+                    dia = DataPublicacao.getDate().toString();
+                }
+
+                if ((DataPublicacao.getMonth() + 1).toString().length == 1) {
+                    mes = '0' + (DataPublicacao.getMonth() + 1);
+                } else {
+                    mes = (DataPublicacao.getMonth() + 1);
+                }
+
+                if (ramo.Solicitacao == null) {
+                    solicitacao = "";
+                } else {
+                    solicitacao = ramo.Solicitacao;
+                }
+
+                if (Versao == null) { Versao = ""; }
+
+                itens += "    <tr> ";
+                itens += "        <td>" + ramo.Projeto.Nome + "</td> ";
+                itens += "        <td>" + ramo.Modulo.Nome + "</td> ";
+                itens += "        <td>" + dia + "/" + mes + "/" + DataPublicacao.getFullYear() + "</td> ";
+                itens += "        <td>" + ramo.Versao + "</td> ";
+                itens += "        <td>" + solicitacao + "</td> ";
+                //itens += "        <td>" + ramo.Caminho + "</td> ";
+
+
+
+                if (data.Editar == true) {
+                    itens += "        <td> ";
+                    itens += "            <div class='Esq10'><a class='EditGrid' href='@Url.Action("Editar", "RamoDeProducao")?idRamoProducao=" + ramo.IdRamoProducao + "' title='Alterar'>Editar</a> </div> ";
+                    itens += "            <div class='Esq5'><a class='DetalheGrid' href='@Url.Action("Detalhes", "RamoDeProducao")?idRamoProducao=" + ramo.IdRamoProducao + "' title='Detalhes'>Detalhes</a></div> ";
+                    itens += "            <div class='Esq5'><a class='DeleteGrid' href='@Url.Action("Apagar", "RamoDeProducao")?idRamoProducao=" + ramo.IdRamoProducao + "' title='Excluir'>Apagar</a></div> ";
+                    itens += "            <div class='Esq5'><a class='Version' href='@Url.Action("EditarVersao", "RamoDeProducao")?idRamoProducao=" + ramo.IdRamoProducao + "' title='Atualizar Versão'>Atualizar Versão</a></div> ";
+                    itens += "            <div style='clear:both;'></div> ";
+                    itens += "        </td> ";
+                } else {
+                    itens += "        <td> ";
+                    itens += "            <div class='Esq5'><a class='DetalheGrid' href='@Url.Action("Detalhes", "RamoDeProducao")?idRamoProducao=" + ramo.IdRamoProducao + "' title='Detalhes'>Detalhes</a></div> ";
+                    itens += "            <div style='clear:both;'></div> ";
+                    itens += "        </td> ";
+                }
+                itens += "    </tr> ";
+
+            });
+
+            itens += "</table> ";
+            $("#ListaDeRamoDeProducao").append(itens);
+
+        });
+    }
+
+    $(function () {
+        $('#ddlProjeto').change(function () {
+            FiltrarConsulta();
+        });
+    });
+    $(function () {
+        $('#ddlmodulo').change(function () {
+            FiltrarConsulta();
+        });
+    });
+    $(function () {
+        $('#ddlRepositorio').change(function () {
+            FiltrarConsulta();
+        });
+    });
+    $(function () {
+        $('#txtversao').change(function () {
+            FiltrarConsulta();
+        });
+    });
+
+    
+</script>
+
+<h2>Versão de Produção</h2>
+
+<div style="margin-top: 10px; margin-bottom: 20px;">
+        @if (User.IsInRole("GCO"))
+        {
+            @Html.ActionLink("Criar Versão", "Novo", null, new { @class = "BtnNew" })
+        }
+    </div>
+
+<div style="margin-top: 10px;">
+
+    <div class="Esq" style="width: 190px;">
+        <div>
+            <label>Versão:</label>
+        </div>
+        <div>
+            <input id="txtversao" name="txtversao" style="width: 175px;" />
+        </div>
+    </div>
+    <div class="Esq20">
+        <div>
+            <label>Projeto:</label>
+        </div>
+        <div>@Html.DropDownList("ddlProjeto", (SelectList)(SelectList)ViewBag.Projeto, " TODOS ", new { })</div>
+    </div>
+    <div class="Esq20">
+        <div>
+            <label>Módulo:</label>
+        </div>
+        <div>@Html.DropDownList("ddlmodulo", (SelectList)ViewBag.Modulo, " TODOS ", new { })</div>
+    </div>
+    <div class="Esq20">
+        <div>
+            <label>Repositório:</label>
+        </div>
+        <div>@Html.DropDownList("ddlRepositorio", (SelectList)ViewBag.Repositorio, " TODOS ", new { })</div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+<div>
+    
+
+    <div id="ListaDeRamoDeProducao" style="margin-top: 20px; ">
+
+        <table style="width:99%">
+            <tr>
+                <th style="">
+                    @Html.DisplayNameFor(model => model.IdProjeto)
+                </th>
+                <th style="">
+                    @Html.DisplayNameFor(model => model.IdModulo)
+                </th>
+                <th style="width: 80px;">
+                    Publicação
+                </th>
+                <th style="">
+                    @Html.DisplayNameFor(model => model.Versao)
+                </th>
+                <th style="">
+                    @Html.DisplayNameFor(model => model.Solicitacao)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.Caminho)
+                </th>*@
+
+                @if (User.IsInRole("GCO"))
+                {
+                    <th style="width: 120px;"></th>
+                }
+                else
+                {
+                    <th style="width: 30px;"></th>
+                }
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr style="font-size: 11px;">
+                    <td style="padding-right: 10px;">
+                        @Html.DisplayFor(modelItem => item.Projeto.Nome)
+                    </td>
+                    <td style="padding-right: 10px;">
+                        @Html.DisplayFor(modelItem => item.Modulo.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataPublicacao)
+                    </td>
+                    <td style="padding-right: 10px;">
+                        @Html.DisplayFor(modelItem => item.Versao)
+                    </td>
+                    <td style="padding-right: 10px;">
+                        @Html.DisplayFor(modelItem => item.Solicitacao)
+                    </td>
+                    @*<td style="padding-right: 10px;">
+                        @Html.DisplayFor(modelItem => item.Caminho)
+                    </td>*@
+                    <td>
+                        @if (User.IsInRole("GCO"))
+                        {
+                            <div class="Esq10">@Html.ActionLink("Editar", "Editar", new { idRamoProducao = item.IdRamoProducao }, new { @class = "EditGrid", title = "Alterar" }) </div>
+                            <div class="Esq5">@Html.ActionLink("Detalhe", "Detalhes", new { idRamoProducao = item.IdRamoProducao }, new { @class = "DetalheGrid", title = "Detalhe" })</div>
+                            <div class="Esq5">@Html.ActionLink("Apagar", "Apagar", new { idRamoProducao = item.IdRamoProducao }, new { @class = "DeleteGrid", title = "Excluir" })</div>
+                            <div class="Esq5">@Html.ActionLink("EditarVersao", "Atualizar Versão", new { idRamoProducao = item.IdRamoProducao }, new { @class = "Version", title = "Atualizar Versão" })</div>
+                            <div style="clear: both;"></div>
+                        }
+                        else
+                        {
+                            <div class="Esq5">@Html.ActionLink("Detalhe", "Detalhes", new { idRamoProducao = item.IdRamoProducao }, new { @class = "DetalheGrid", title = "Detalhe" })</div>
+                            <div style="clear: both;"></div>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+

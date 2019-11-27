@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "DM - Deploy Management";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+            </hgroup>
+        </div>
+    </section>
+}
+
+<ol class="round">
+    <li class="one">
+        <h5>Unidade de Desenvolvimento:</h5>
+        Todo o desenvolvimento que for realizado, deve estar vinculado a uma Unidade de Desenvolvimento, que pode estar em projeto ou em uma correção de bug.
+        As unidades de desenvolvimento são criadas pela gerência de configuração, e atribuídas apenas para os desenvolvedores que irão participar do desenvolvimento.
+    </li>
+    <li class="two">
+        <h5>Script de Banco de Dados:</h5>
+        Os scripts de banco de dados devem ser anexados junto à Unidade de Desenvolvimento e seguir as regras abaixo:<br />
+        &nbsp;&nbsp;&nbsp;- Não devem ser anexados scripts gerados pelo SQL Delta, isso irá ocorrer problemas na execução dos scripts.<br />
+        &nbsp;&nbsp;&nbsp;- Evitar scripts de dados muito grande, isso dificultar a inclusão e execução do script.<br /><br />
+        <strong>Observação:&nbsp;</strong>Os scripts de banco de dados serão Validados/Executados na base de homologação caso exista.<br />
+    </li>
+    <li class="three">
+        <h5>Web.Config</h5>
+        Incluir toda a alteração que for realizada no Web.config, porém para incluir no servidor de homologação, é necessário informar a Gerência de Configuração, para que o mesmo seja publicado.
+    </li>
+</ol>

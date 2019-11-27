@@ -1,0 +1,168 @@
+﻿@model GCO.Dominio.Entidade.UnidadeDeDesenvolvimento
+
+@{
+    ViewBag.Title = "DM - Unidade de Desenvolvimento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Html.ActionLink("Voltar", "Listar",null,new { @class = "BtnVoltar", title = "Voltar" })
+<h2>Detalhes - Unidade de Desenvolvimento</h2>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(false)
+
+    <fieldset>
+        <legend>Unidade de Desenvolvimento</legend>
+        <div>
+            <div class="Esq">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.TipoDeUnidadeDeDesenvolvimento.Nome)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.TipoDeUnidadeDeDesenvolvimento.Nome , new { disabled="disabled", style="width: 190px;" })
+                </div>
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Projeto.Nome)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Projeto.Nome, new { disabled="disabled", style="width: 190px;" })
+                </div>
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.NumeroTicket)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.NumeroTicket, new { disabled="disabled", style="width: 190px;" })
+                </div>
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.NumeroSolicitacao)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.NumeroSolicitacao, new { disabled="disabled", style="width: 190px;" })
+                </div>
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.DataPublicacao)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.DataPublicacao, new { @class = "date" ,disabled="disabled", style="width: 190px;"})
+                </div>
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Solicitante.UserName)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Solicitante.UserName,  new { disabled="disabled", style="width: 190px;" })
+                </div>
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.StatusUnidadeDesenvolvimento.Nome)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.StatusUnidadeDesenvolvimento.Nome,  new { disabled="disabled", style="width: 190px;" })
+                </div>
+            </div>
+
+            <div class="Esq50">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.TeamProject)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.TeamProject, new { disabled="disabled" })
+                </div>
+                <div class="editor-label">
+                    <label>Nomes dos bancos de Dados</label>
+                </div>
+                <div class="editor-field">
+                    <ul id="ulBancos">
+                        @for (int i = 0; i < Model.UnidadeDeDesenvolvimentoDeBanco.Count(); i++ )
+                        {
+                            <li class="liBancos_@i">
+                                <input type="text" readonly="true" id="NomeBanco_@i" name="UnidadeDeDesenvolvimentoDeBanco[@i].NomeBanco" value="@Model.UnidadeDeDesenvolvimentoDeBanco.ToArray()[i].NomeBanco" />
+                            </li>
+                        }
+                    </ul>
+                    
+                </div>
+            </div>
+            <div class="Esq50">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.NomeBuild)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.NomeBuild, new { disabled="disabled" })
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.CaminhoPublish)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.CaminhoPublish, new { disabled="disabled" })
+                </div>
+                <div class="editor-label">
+                    <label>Desenvolvedores:</label>
+                </div>
+                <div class="editor-label">
+                    <div style="padding: 5px; border: 1px solid #DDD; background: #FFF; overflow-y: scroll; height: 200px;">
+                        @foreach (var item in ViewBag.Desenvolvedores)
+                        {
+                            if (Model.Desenvolvedores != null && Model.Desenvolvedores.Where(u => u.UserId == item.UserId).Count() == 1)
+                            {
+                            <input type="checkbox" id="chkDesenvolvedor_@item.UserId" value="@item.UserName" name="chkDesenvolvedor_@item.UserId" checked="checked" disabled="disabled" />  @item.UserName<br />
+                            }
+
+
+                        }
+                    </div>
+                </div>
+             </div>
+         <div style="clear:both;"></div>       
+         </div>
+    </fieldset>
+    
+<div style="width: 1200px;">
+
+
+ <table style="width: 1190px;">
+    <tr>
+        <th style="width:220px;">
+            Módulo
+        </th>
+        <th style="width:220px;">
+            Versão
+        </th>
+        <th>
+            Caminho
+        </th>
+        <th style="width:30px;"></th>
+    </tr>
+
+@foreach (var item in Model.RamoDeDesenvolvimento.Where(r => r.IsDeleted == false).OrderBy(r => r.Modulo.Nome)) {
+    <tr style="font-size:11px;">
+
+        <td>
+            @Html.DisplayFor(modelItem => item.Modulo.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Versao)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Caminho)
+        </td>
+        <td>        
+            <div class="Esq5">@Html.ActionLink("Detalhe", "Detalhe","RamoDeDesenvolvimento", new { idRamoDesenvolvimento = item.IdRamoDesenvolvimento }, new { @class = "DetalheGrid", title = "Detalhe" })</div>
+            <div style="clear:both;"></div>
+        </td>
+    </tr>
+    }
+</table>
+ </div>
+}
+<p>
+    @Html.ActionLink("Voltar", "Listar")
+</p>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

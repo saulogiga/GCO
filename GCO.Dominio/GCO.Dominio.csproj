@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B3F98DF9-D360-400D-AC5F-75097A604300}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GCO.Dominio</RootNamespace>
+    <AssemblyName>GCO.Dominio</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entidade\ArquivoDeUnidadeDeDesenvolvimento.cs" />
+    <Compile Include="Entidade\Cliente.cs" />
+    <Compile Include="Entidade\Modulo.cs" />
+    <Compile Include="Entidade\Perfil.cs" />
+    <Compile Include="Entidade\Projeto.cs" />
+    <Compile Include="Entidade\PublicacaoDeRelease.cs" />
+    <Compile Include="Entidade\PublicacaoDeStatus.cs" />
+    <Compile Include="Entidade\RamoDeDesenvolvimento.cs" />
+    <Compile Include="Entidade\RamoDeProducao.cs" />
+    <Compile Include="Entidade\Repositorio.cs" />
+    <Compile Include="Entidade\ScriptDeBanco.cs" />
+    <Compile Include="Entidade\TipoDeArquivo.cs" />
+    <Compile Include="Entidade\TipoDeServidor.cs" />
+    <Compile Include="Entidade\ServidorDeBanco.cs" />
+    <Compile Include="Entidade\StatusDeUnidadeDeDesenvolvimento.cs" />
+    <Compile Include="Entidade\TipoDeUnidadeDeDesenvolvimento.cs" />
+    <Compile Include="Entidade\TipoDeScriptDeBanco.cs" />
+    <Compile Include="Entidade\TipoDeWebConfig.cs" />
+    <Compile Include="Entidade\TipoDeRepositorio.cs" />
+    <Compile Include="Entidade\UnidadeDeDesenvolvimento.cs" />
+    <Compile Include="Entidade\UnidadeDeDesenvolvimentoDeBanco.cs" />
+    <Compile Include="Entidade\Usuario.cs" />
+    <Compile Include="Entidade\WebConfig.cs" />
+    <Compile Include="Fabrica\FabricaDeCliente.cs" />
+    <Compile Include="Fabrica\FabricaDeModulo.cs" />
+    <Compile Include="Fabrica\FabricaDeProjeto.cs" />
+    <Compile Include="Fabrica\FabricaDePublicacaoDeRelease.cs" />
+    <Compile Include="Fabrica\FabricaDeRamoDeDesenvolvimento.cs" />
+    <Compile Include="Fabrica\FabricaDeRamoDeProducao.cs" />
+    <Compile Include="Fabrica\FabricaDeRepositorio.cs" />
+    <Compile Include="Fabrica\FabricaDeScriptDeBanco.cs" />
+    <Compile Include="Fabrica\FabricaDeStatusDeUnidadeDeDesenvolvimento.cs" />
+    <Compile Include="Fabrica\FabricaDeTipoDeScriptDeBanco.cs" />
+    <Compile Include="Fabrica\FabricaDeTipoDeUnidadeDeDesenvolvimento.cs" />
+    <Compile Include="Fabrica\FabricaDeUnidadeDeDesenvolvimento.cs" />
+    <Compile Include="Fabrica\FabricaDeWebConfig.cs" />
+    <Compile Include="IUnitOfWork.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositorio\IRepositorioDePublicacaoDeRelease.cs" />
+    <Compile Include="Repositorio\IRepositorioDePublicacaoDeStatus.cs" />
+    <Compile Include="Repositorio\IRepositorioDeRamoDeDesenvolvimento.cs" />
+    <Compile Include="Repositorio\IRepositorioDeRepositorio.cs" />
+    <Compile Include="Repositorio\IRepositorioDeArquivoDeUnidadeDeDesenvolvimento.cs" />
+    <Compile Include="Repositorio\IRepositorioDeCliente.cs" />
+    <Compile Include="Repositorio\IRepositorioDeModulo.cs" />
+    <Compile Include="Repositorio\IRepositorioDePerfil.cs" />
+    <Compile Include="Repositorio\IRepositorioDeProjeto.cs" />
+    <Compile Include="Repositorio\IRepositorioDeRamoDeProducao.cs" />
+    <Compile Include="Repositorio\IRepositorioDeScriptDeBanco.cs" />
+    <Compile Include="Repositorio\IRepositorioDeServidorDeBanco.cs" />
+    <Compile Include="Repositorio\IRepositorioDeStatusDeUnidadeDeDesenvolvimento.cs" />
+    <Compile Include="Repositorio\IRepositorioDeTipoDeArquivo.cs" />
+    <Compile Include="Repositorio\IRepositorioDeTipoDeRepositorio.cs" />
+    <Compile Include="Repositorio\IRepositorioDeTipoDeScriptDeBanco.cs" />
+    <Compile Include="Repositorio\IRepositorioDeTipoDeUnidadeDeDesenvolvimento.cs" />
+    <Compile Include="Repositorio\IRepositorioDeTipoDeWebConfig.cs" />
+    <Compile Include="Repositorio\IRepositorioDeUnidadeDeDesenvolvimento.cs" />
+    <Compile Include="Repositorio\IRepositorioDeUsuario.cs" />
+    <Compile Include="Repositorio\IRepositorioDeWebConfig.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

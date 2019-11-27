@@ -1,0 +1,77 @@
+﻿@model GCO.Dominio.Entidade.ScriptDeBanco
+
+@{
+    ViewBag.Title = "DM - Unidade de Desenvolvimento - Script";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.ActionLink("Voltar", "Listar",new { idUnidadeDesenvolvimento= ViewBag.IdUnidadeDesenvolvimento },new { @class = "BtnVoltar", title = "Voltar" })
+
+<h2>Alterar Script</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(false)
+
+    <fieldset>
+        <legend>ScriptDeBanco</legend>
+        <div>
+            <div class="Esq">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.IdTipoScript)
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.IdTipoScript, (SelectList)ViewBag.TipoDeScriptDeBanco, "Selecione", new { style="width: 190px;" })
+                </div>
+            </div>
+
+            <div class="Esq20">
+                <div class="editor-label">
+                    <label>Usuário</label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Usuario.UserName, new { disabled="disabled",style="width: 190px;" } )
+                </div>
+            </div>
+            
+            <div class="Esq20">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Nome)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Nome, new { disabled="disabled" } )
+                    @Html.HiddenFor(model => model.Nome)
+                </div>
+            </div>
+
+            <div class="Esq20">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Comentario)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Comentario)
+                </div>
+            </div>
+            <div class="Esq20" style="padding-top: 12px;">
+                <input type="submit" value="Alterar" />
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+        <div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Script)
+            </div>
+            <div class="editor-field">
+                @Html.TextAreaFor(model => model.Script,new { style="width: 1190px; height:500px;" })
+            </div>
+        </div>
+
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Voltar", "Listar",new { idUnidadeDesenvolvimento= ViewBag.IdUnidadeDesenvolvimento },null)
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

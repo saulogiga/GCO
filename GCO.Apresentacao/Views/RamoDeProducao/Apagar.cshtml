@@ -1,0 +1,77 @@
+﻿@model GCO.Dominio.Entidade.RamoDeProducao
+
+@{
+    ViewBag.Title = "DM - Unidade de Desenvolvimento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.ActionLink("Voltar", "Listar",null,new { @class = "BtnVoltar", title = "Voltar" })
+
+<h2>Apagar Versão de Produção</h2>
+
+<h3>Deseja realmente apagar a Versão de Produção?</h3>
+<fieldset>
+    <legend>RamoDeProducao</legend>
+    <div class="editor-label">
+            @Html.LabelFor(model => model.IdProjeto)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Projeto.Nome, new { disabled = "disabled", @readonly = "readonly"})
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdModulo)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Modulo.Nome, new { disabled = "disabled", @readonly = "readonly"})
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdRepositorio)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Repositorio.Nome, new { disabled = "disabled", @readonly = "readonly"})
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Versao)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Versao, new { disabled = "disabled", @readonly = "readonly"})
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DataPublicacao)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.DataPublicacao,new { @class="date",disabled = "disabled", @readonly = "readonly" })
+        </div>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Caminho)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayTextFor(model => model.Caminho)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Solicitacao)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Solicitacao, new { disabled = "disabled", @readonly = "readonly"})
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Comentario)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Comentario, new { disabled = "disabled", @readonly = "readonly"})
+        </div>
+    
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Apagar" /> |
+        @Html.ActionLink("Voltar", "Listar")
+    </p>
+}

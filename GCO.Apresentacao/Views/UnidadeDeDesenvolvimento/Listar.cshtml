@@ -1,0 +1,222 @@
+﻿@model IEnumerable<GCO.Dominio.Entidade.UnidadeDeDesenvolvimento>
+
+@{
+    ViewBag.Title = "DM - Unidade de Desenvolvimento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+
+    function FiltrarConsulta() {
+        
+        var _projeto = $('#ddlProjeto').val();
+        var _tipo = $('#ddlTipo').val();
+        var _status = $('#ddlStatus').val();
+
+        if (_projeto == null || _projeto == "") { _projeto = 0; }
+        if (_tipo == null || _tipo == "") { _tipo = 0; }
+        if (_status == null || _status == "") { _status = 0; }
+
+
+        $.getJSON('@Url.Action("GetUnidadeDeDesenvolvimento")', { ticketSolicitacao: $('#txtTicketSolicitacao').val(), Projeto: _projeto, Tipo: _tipo, Status: _status }, function (data) {
+
+            $("#ListaDeUnidadeDeDesenvolvimento").empty();
+
+            var itens;
+            itens = "";
+            itens += "<table style='width: 1190px;'> ";
+            itens += "    <tr> ";
+            itens += "        <th style='width:120px;'>Pacote de Valor</th> ";
+            //itens += "        <th style='width:120px;'>Entregáveis</th> ";
+            //itens += "        <th style='width:70px;'>Publicação</th> ";
+            itens += "        <th style='width:250px;'>Status</th> ";
+            itens += "        <th style='width:120px;'>Tipo</th> ";
+            itens += "        <th>Cliente - Projeto</th> ";
+            itens += "        <th style='width:80px;'>Deploy</th> ";
+            if (data.Editar == true) {
+                itens += "        <th style='width:90px;'></th> ";
+            } else {
+                itens += "        <th style='width:30px;'></th> ";
+            }
+            itens += "    </tr> ";            
+            
+            $(data.Resultado).each(function (index, unidade) {
+                
+                //var DataPublicacao = new Date(parseInt(unidade.DataPublicacao.substr(6)));
+                var NumeroSolicitacao = unidade.NumeroSolicitacao;
+
+                //if (DataPublicacao == null) { DataPublicacao = ""; }
+                if (NumeroSolicitacao == null) { NumeroSolicitacao = ""; }
+
+                itens += "    <tr> ";
+                itens += "        <td>" + unidade.NumeroTicket + "</td> ";
+                //itens += "        <td>" + NumeroSolicitacao + "</td> ";
+                //itens += "        <td>" + DataPublicacao.toGMTString() + "/" + (DataPublicacao.getMonth() + 1) + "/" + DataPublicacao.getFullYear() + "</td> ";
+                //itens += "        <td></td> ";
+                itens += "        <td>" + unidade.StatusUnidadeDesenvolvimento.Nome + "</td> ";
+                itens += "        <td>" + unidade.TipoDeUnidadeDeDesenvolvimento.Nome + "</td> ";
+                itens += "        <td>" + unidade.Projeto.Cliente.Nome + " - " + unidade.Projeto.Nome + "</td> ";
+                itens += "        <td> ";
+                //if ((unidade.StatusUnidadeDesenvolvimento.IdStatusUnidadeDesenvolvimento != 1 & unidade.StatusUnidadeDesenvolvimento.IdStatusUnidadeDesenvolvimento != 5 & unidade.StatusUnidadeDesenvolvimento.IdStatusUnidadeDesenvolvimento != 6) || data.Editar == true) {
+                    
+                    itens += "            <div class='Esq5'><a class='SQLGrid' href='@Url.Action("Listar","script")?idUnidadeDesenvolvimento=" + unidade.IdUnidadeDesenvolvimento + "' title='Scripts de Banco'>SQL</a></div> ";
+                    itens += "            <div class='Esq5'><a class='WebConfingGrid' href='@Url.Action("Listar","WebConfig")?idUnidadeDesenvolvimento=" + unidade.IdUnidadeDesenvolvimento + "' title='Web.config'>WebConfing</a></div> ";
+                    
+                    if (unidade.CaminhoBuild != null & unidade.CaminhoPublish != null) {
+                        itens += "            <div class='Esq5'><a class='Publish' href='@Url.Action("Release","Build")?idUnidadeDesenvolvimento=" + unidade.IdUnidadeDesenvolvimento + "' title='Publish'>WebConfing</a></div> ";
+                    }
+                    //itens += "            <div class='Esq5'><a class='FilesGrid' href='/Arquivos/Listar?idUnidadeDesenvolvimento=" + unidade.IdUnidadeDesenvolvimento + "' title='CSS / Imagens / Arquivos em geral'>Arquivos</a></div> ";
+                    itens += "            <div style='clear:both;'></div> ";
+                //}
+
+                itens += "        </td> ";
+
+                if (data.Editar == true) {
+                    itens += "        <td> ";
+                    itens += "            <div class='Esq10'><a class='EditGrid' href='@Url.Action("Editar","UnidadeDeDesenvolvimento")?idUnidadeDesenvolvimento=" + unidade.IdUnidadeDesenvolvimento + "' title='Alterar'>Editar</a> </div> ";
+                    itens += "            <div class='Esq5'><a class='DetalheGrid' href='@Url.Action("Detalhes","UnidadeDeDesenvolvimento")?idUnidadeDesenvolvimento=" + unidade.IdUnidadeDesenvolvimento + "' title='Detalhes'>Detalhes</a></div> ";
+                    itens += "            <div class='Esq5'><a class='DeleteGrid' href='@Url.Action("Apagar","UnidadeDeDesenvolvimento")?idUnidadeDesenvolvimento=" + unidade.IdUnidadeDesenvolvimento + "' title='Excluir'>Apagar</a></div> ";
+                    itens += "            <div style='clear:both;'></div> ";
+                    itens += "        </td> ";
+                } else {
+                    itens += "        <td> ";
+                    itens += "            <div class='Esq5'><a class='DetalheGrid' href='@Url.Action("Detalhes","UnidadeDeDesenvolvimento")?idUnidadeDesenvolvimento=" + unidade.IdUnidadeDesenvolvimento + "' title='Detalhes'>Detalhes</a></div> ";
+                    itens += "            <div style='clear:both;'></div> ";
+                    itens += "        </td> ";
+                }
+                itens += "    </tr> ";
+                
+            });
+
+            itens += "</table> ";
+            $("#ListaDeUnidadeDeDesenvolvimento").append(itens);
+            
+        });
+    }
+
+    $(function () {
+        $('#ddlProjeto').change(function () {
+            FiltrarConsulta();
+        });
+    });
+    $(function () {
+        $('#ddlTipo').change(function () {
+            FiltrarConsulta();
+        });
+    });
+    $(function () {
+        $('#ddlStatus').change(function () {
+            FiltrarConsulta();
+        });
+    });
+    $(function () {
+        $('#txtTicketSolicitacao').change(function () {
+            FiltrarConsulta();
+        });
+    });
+</script>
+
+<h2>Unidade de Desenvolvimento</h2>
+    
+    <div style="margin-top: 10px; margin-bottom: 20px;">
+        @if (User.IsInRole("GCO")){
+            @Html.ActionLink("Criar Unidade de Desenvolvimento", "Novo",null, new { @class = "BtnNew" })
+        }
+    </div>
+    <div style=" margin-bottom: -10px;">
+        <div class="Esq" style="width: 180px;">
+            <div><label>Pacote/Entregáveis:</label></div>
+            <div><input id="txtTicketSolicitacao" name="txtTicketSolicitacao" style="width: 170px;"/></div>
+        </div>
+        <div class="Esq20">
+            <div><label>Projeto:</label></div>
+            <div>@Html.DropDownList("ddlProjeto", (SelectList)(SelectList)ViewBag.Projeto, " TODOS ", new { })</div>
+        </div>
+        <div class="Esq20">
+            <div><label>Tipo:</label></div>
+            <div>@Html.DropDownList("ddlTipo", (SelectList)ViewBag.TipoDeUnidadeDeDesenvolvimento, " TODOS ", new {  })</div>
+        </div>
+        <div class="Esq20">
+            <div><label>Status:</label></div>
+            <div>@Html.DropDownList("ddlStatus", (SelectList)ViewBag.StatusDeUnidadeDeDesenvolvimento, " Em Andamento ", new {  })</div>
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+
+<div id="ListaDeUnidadeDeDesenvolvimento">
+<table style="width: 1190px;">
+    <tr>
+        <th style="width:120px;">
+            Pacote de Valor
+        </th>
+        @*<th style="width:120px;">
+            Entregáveis
+        </th>*@
+        <th style="width:250px;">
+            Status
+        </th>
+        <th style="width:120px;">
+            Tipo
+        </th>
+        <th>
+            Cliente - Projeto
+        </th>
+        <th style="width:80px;">Deploy</th>
+        @if (User.IsInRole("GCO"))
+        {
+            <th style="width:90px;"></th>
+        }else{
+            <th style="width:30px;"></th>
+        }
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumeroTicket)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.NumeroSolicitacao)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.StatusUnidadeDesenvolvimento.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TipoDeUnidadeDeDesenvolvimento.Nome)
+        </td>
+        <td>
+            @item.Projeto.Cliente.Nome&nbsp;-&nbsp;@item.Projeto.Nome
+        </td>
+        <td>
+            @*@if ((item.StatusUnidadeDesenvolvimento.IdStatusUnidadeDesenvolvimento != 1 && item.StatusUnidadeDesenvolvimento.IdStatusUnidadeDesenvolvimento != 5 && item.StatusUnidadeDesenvolvimento.IdStatusUnidadeDesenvolvimento != 6) || User.IsInRole("GCO"))
+            {
+            *@<div class="Esq5">@Html.ActionLink("SQL", "Listar", "Script", new { idUnidadeDesenvolvimento = item.IdUnidadeDesenvolvimento }, new { @class = "SQLGrid", title = "Scripts de Banco" })</div>
+            <div class="Esq5">@Html.ActionLink("WebConfig", "Listar", "WebConfig", new { idUnidadeDesenvolvimento = item.IdUnidadeDesenvolvimento }, new { @class = "WebConfingGrid", title = "Web.config" })</div>
+                @if (item.CaminhoBuild != null && item.CaminhoPublish != null){
+                    <div class="Esq5">@Html.ActionLink("Build", "Release", "Build", new { idUnidadeDesenvolvimento = item.IdUnidadeDesenvolvimento }, new { @class = "Publish", title = "Publish" })</div>
+                }
+            @*<div class="Esq5">@Html.ActionLink("Arquivos", "Listar","Arquivos", new { idUnidadeDesenvolvimento=item.IdUnidadeDesenvolvimento }, new { @class = "FilesGrid", title = "CSS / Imagens / Arquivos em geral" })</div>*@
+            <div style="clear:both;"></div>
+            @*}*@
+        </td>
+        @if (User.IsInRole("GCO"))
+        {
+            <td>
+                <div class="Esq10">@Html.ActionLink("Editar", "Editar", new { idUnidadeDesenvolvimento = item.IdUnidadeDesenvolvimento }, new { @class = "EditGrid", title = "Alterar" }) </div>
+                <div class="Esq5">@Html.ActionLink("Detalhe", "Detalhes", new { idUnidadeDesenvolvimento = item.IdUnidadeDesenvolvimento }, new { @class = "DetalheGrid", title = "Detalhe" })</div>
+                <div class="Esq5">@Html.ActionLink("Apagar", "Apagar", new { idUnidadeDesenvolvimento = item.IdUnidadeDesenvolvimento }, new { @class = "DeleteGrid", title = "Excluir" })</div>
+                <div style="clear:both;"></div>
+            </td>
+        }
+        else
+        {
+                <td>
+                <div class="Esq5">@Html.ActionLink("Detalhe", "Detalhes", new { idUnidadeDesenvolvimento = item.IdUnidadeDesenvolvimento }, new { @class = "DetalheGrid", title = "Detalhe" })</div>
+                <div style="clear:both;"></div>
+            </td>
+        }
+    </tr>
+}
+</table>
+</div>

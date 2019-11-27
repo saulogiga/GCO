@@ -1,0 +1,47 @@
+﻿@model IEnumerable<GCO.Dominio.Entidade.Repositorio>
+
+@{
+    ViewBag.Title = "DM - Repositório";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Repositório</h2>
+
+    <div style="margin-top: 10px; margin-bottom: 20px;">
+            @Html.ActionLink("Criar Repositório", "Novo",null, new { @class = "BtnNew" })
+    </div>
+
+<table style="width: 1190px;">
+    <tr>
+        <th style="width:350px;">
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Caminho)
+        </th>
+        <th style="width:60px;">
+            Tipo
+        </th>
+        <th style="width:70px;"></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Caminho)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TipoRepositorio.Nome)
+        </td>
+        <td>
+            <div class="Esq10">@Html.ActionLink("Editar", "Editar", new { idRepositorio = item.IdRepositorio }, new { @class = "EditGrid", title = "Alterar" }) </div>
+             <div class="Esq5">@Html.ActionLink("Apagar", "Apagar", new { idRepositorio = item.IdRepositorio }, new { @class = "DeleteGrid", title = "Excluir" })</div>
+            <div style="clear:both;"></div>
+        </td>
+    </tr>
+}
+
+</table>

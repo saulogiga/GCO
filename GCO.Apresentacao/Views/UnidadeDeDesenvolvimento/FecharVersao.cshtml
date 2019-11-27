@@ -1,0 +1,112 @@
+﻿@model GCO.Dominio.Entidade.UnidadeDeDesenvolvimento
+
+@{
+    ViewBag.Title = "DM - Unidade de Desenvolvimento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.ActionLink("Voltar", "Listar",null,new { @class = "BtnVoltar", title = "Voltar" })
+
+<h2>Fechar Versão</h2>
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(false)
+<div style="width: 100%; font-size: 13px;">
+        <div style="width: 100%;">
+            <div >
+                <div style="margin-top: 10px;">
+                    <div class="editor-label Esq">
+                        <label>Pacote de Valor</label>
+                    </div>
+                    <div class="editor-field Esq5">@Model.NumeroTicket</div>
+                    <div class="editor-label Esq20">
+                        <label>Entregáveis</label>
+                    </div>
+                    <div class="editor-field Esq5">@Model.NumeroSolicitacao</div>
+                    <div class="editor-label Esq20">
+                        <label>Projeto</label>
+                    </div>
+                    <div class="editor-field Esq5">@Model.Projeto.Nome</div>
+                    <div class="editor-label Esq20">
+                        <label>Tipo</label>
+                    </div>
+                    <div class="editor-field Esq5">@Model.TipoDeUnidadeDeDesenvolvimento.Nome</div>
+                    <div class="editor-label Esq20">
+                        <label>Data de Publicação</label>
+                    </div>
+                    <div class="editor-field Esq5">@Model.DataPublicacao.Value.ToString("dd/MM/yyyy")</div>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+<div style="width: 1190px; margin-top: 20px; font-size: 12px;">
+@for (var item = 0; item < Model.RamoDeDesenvolvimento.Count(); item++ )
+{
+    <div style="border: 2px solid #2f2e2e; margin-top: 7px; background:#7ac0da;">
+    @if (Model.RamoDeDesenvolvimento.ToList()[item].RamoDeProducao != null)
+    {
+        <div style="width: 100%; border-bottom: 1px solid;">
+          <div class="Esq5" style="width: 11%; font-size: 12px; border-right: 1px solid; background:#66b9db;">
+              <label style="font-weight:bold;">Ramo de Produção:</label>
+          </div>
+          <div style="float:left; width: 88%">
+              <div class="Esq5" style="width:50px;"><label style="font-weight:bold;">Módulo:</label></div>
+              <div class="Esq" style="width:300px;"><label style="font-weight:normal;">@Model.RamoDeDesenvolvimento.ToList()[item].Modulo.Nome</label></div>
+              <div class="Esq" style="width:60px;"><label style="font-weight:bold;">Caminho:</label></div>
+              <div class="Esq" style="width:625px;"><label style="font-weight:normal;">@Model.RamoDeDesenvolvimento.ToList()[item].RamoDeProducao.Caminho</label></div>
+              <div style="clear:both;"></div>
+          </div>
+          <div style="clear:both"></div>
+        </div>
+    }
+   <div style="width: 100%;   background: #f7f5f5; padding-top: 5px;">
+        <div class="Esq5" style="width:50px; margin-top: 5px;"><label style="font-weight:bold;">Módulo:</label></div>
+        <div class="Esq" style="width:300px; margin-top: 5px;"><label style="font-weight:normal;">@Model.RamoDeDesenvolvimento.ToList()[item].Modulo.Nome</label></div>
+        <div class="Esq" style="width:75px; margin-top: 5px;"><label style="font-weight:bold;">Repositório:</label></div>
+        <div class="Esq" style="width:520px; margin-top: 5px;"><label style="font-weight:normal;">@Model.RamoDeDesenvolvimento.ToList()[item].Repositorio.Caminho</label></div>
+        @if (Model.RamoDeDesenvolvimento.ToList()[item].Repositorio.TipoRepositorio.Nome == "SVN")
+        {
+            <div class="Esq editor-label" style="width:40px; margin-top: 5px;"><label style="font-weight:bold;">Tag:</label></div>
+            <div class="Esq" style="width:180px;">
+            @if (Model.RamoDeDesenvolvimento.ToList()[item].Branch == true)
+            {
+                <input type="text" name="RamoDeDesenvolvimento[@item].Versao" style="width: 180px;" />
+            } 
+            else
+            {
+                <input type="text" name="RamoDeDesenvolvimento[@item].Versao" style="width: 180px;" value="@Model.RamoDeDesenvolvimento.ToList()[item].Versao" readonly="true" />
+            }   
+            <input type="hidden"  name="RamoDeDesenvolvimento[@item].IdRamoDesenvolvimento" value="@Model.RamoDeDesenvolvimento.ToList()[item].IdRamoDesenvolvimento" />
+            </div>
+        }
+        else
+        {
+            <div class="Esq editor-label" style="width:40px; margin-top: 5px;"><label style="font-weight:bold; ">Label:</label></div>
+            <div class="Esq" style="width:180px;">
+            @if (Model.RamoDeDesenvolvimento.ToList()[item].Branch == true)
+            {
+                <input type="text" name="RamoDeDesenvolvimento[@item].Versao" style="width: 180px;" />
+            } 
+            else
+            {
+                <input type="text" name="RamoDeDesenvolvimento[@item].Versao" style="width: 180px;" value="@Model.RamoDeDesenvolvimento.ToList()[item].Versao" readonly="true" />
+            }   
+            <input type="hidden"  name="RamoDeDesenvolvimento[@item].IdRamoDesenvolvimento" value="@Model.RamoDeDesenvolvimento.ToList()[item].IdRamoDesenvolvimento" />
+            </div>
+        }
+       <div style="clear:both;"></div>
+    </div>
+    </div>
+}
+</div>
+
+<p><input type="submit" value="Fechar versão" /></p>    
+
+}
+
+<div>
+    @Html.ActionLink("Voltar", "Listar")
+</div>
+

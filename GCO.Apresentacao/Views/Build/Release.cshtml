@@ -1,0 +1,399 @@
+﻿@model IEnumerable<GCO.Apresentacao.Models.ReleaseModels>
+
+@{
+    ViewBag.Title = "DM - Release";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script type="text/javascript">
+
+    var caminhoDoPublish = "";
+    var pastaDoPublish = "";
+    var Release = "";
+    var caminhoSelecionado = "";
+
+    window.setInterval(AtualizarStatus, 5000);
+
+    function AtualizarStatus() {
+
+        
+        $.getJSON('@Url.Action("AtualizarTela")', { IdUnidadeDesenvolvimento: $('#hdfIdUnidadeDesenvolvimento').val() }, function (data) {
+            
+            
+            $(data.Resultado).each(function (index, historico) {
+            
+                $("#divStatus_" + historico.IdPublicacaoRelease).empty();
+                $("#divStatus_" + historico.IdPublicacaoRelease).append("<strong>Status:</strong>&nbsp;" + historico.PublicacaoStatus.Descricao);
+
+                $("#divDetalhes_" + historico.IdPublicacaoRelease).empty();
+                $("#divDetalhes_" + historico.IdPublicacaoRelease).append("<textarea style='width: 99%; height: 300px; margin-top: 5px;'>" + historico.Detalhes + "</textarea>");
+
+                if (historico.IdPublicacaoStatus == 1) {
+                    $("#divImgStatus_" + historico.IdPublicacaoRelease).empty();
+                    $("#divImgStatus_" + historico.IdPublicacaoRelease).append("    <img  src='../Images/wait-16.png'/> ");
+                }
+                if (historico.IdPublicacaoStatus == 2) {
+                    $("#divImgStatus_" + historico.IdPublicacaoRelease).empty();
+                    $("#divImgStatus_" + historico.IdPublicacaoRelease).append("    <img  src='../Images/ajax-loader16.gif'/> ");
+                }
+                if (historico.IdPublicacaoStatus == 3) {
+                    $("#divImgStatus_" + historico.IdPublicacaoRelease).empty();
+                    $("#divImgStatus_" + historico.IdPublicacaoRelease).append("    <img  src='../Images/1384285306_list-remove.png'/>");
+                }
+                if (historico.IdPublicacaoStatus == 4) {
+                    $("#divImgStatus_" + historico.IdPublicacaoRelease).empty();
+                    $("#divImgStatus_" + historico.IdPublicacaoRelease).append("    <img  src='../Images/1366345536_tick-circle-frame.png'/> ");
+                }
+
+            });
+        });
+    }
+
+    function AtualizarTela() {
+ 
+
+        $.getJSON('@Url.Action("AtualizarTela")', { IdUnidadeDesenvolvimento: $('#hdfIdUnidadeDesenvolvimento').val() }, function (data) {
+
+            var itens;
+            var dia;
+            var mes;
+            var hora;
+
+            itens = "";
+
+            $(data.Resultado).each(function (index, historico) {
+
+                var DataPublicacao = new Date(parseInt(historico.DataInclusao.substr(6)));
+
+                if (DataPublicacao.getDate().toString().length == 1) {
+                    dia = '0' + DataPublicacao.getDate().toString();
+                } else {
+                    dia = DataPublicacao.getDate().toString();
+                }
+
+                if ((DataPublicacao.getMonth() + 1).toString().length == 1) {
+                    mes = '0' + (DataPublicacao.getMonth() + 1);
+                } else {
+                    mes = (DataPublicacao.getMonth() + 1);
+                }
+
+                if (DataPublicacao.getHours.toString().length == 1) {
+                    hora = '0' + DataPublicacao.getHours();
+                } else {
+                    hora = DataPublicacao.getHours();
+                }
+
+                if (DataPublicacao.getMinutes.toString().length == 1) {
+                    hora += ':0' + DataPublicacao.getMinutes();
+                } else {
+                    hora += ':' + DataPublicacao.getMinutes();
+                }
+
+                if (DataPublicacao.getSeconds.toString().length == 1) {
+                    hora += ':0' + DataPublicacao.getSeconds();
+                } else {
+                    hora += ':' + DataPublicacao.getSeconds();
+                }
+
+
+
+                itens += "<div style='margin-top: 15px; border: 1px solid #d9d7d7; padding: 3px;'>";
+                itens += "    <div>";
+                if (historico.IdPublicacaoStatus == 1) {
+                    itens += "    <div id='divImgStatus_" + historico.IdPublicacaoRelease + "' style='width: 20px; float:left;'><img  src='../Images/wait-16.png'/></div> ";
+                }
+                if (historico.IdPublicacaoStatus == 2) {
+                    itens += "    <div id='divImgStatus_" + historico.IdPublicacaoRelease + "' style='width: 20px; float:left;'><img  src='../Images/ajax-loader16.gif'/></div> ";
+                }
+                if (historico.IdPublicacaoStatus == 3) {
+                    itens += "    <div id='divImgStatus_" + historico.IdPublicacaoRelease + "' style='width: 20px; float:left;'><img  src='../Images/1384285306_list-remove.png'/></div>";
+                }
+                if (historico.IdPublicacaoStatus == 4) {
+                    itens += "    <div id='divImgStatus_" + historico.IdPublicacaoRelease + "' style='width: 20px; float:left;'><img  src='../Images/1366345536_tick-circle-frame.png'/></div> ";
+                }
+                itens += "        <div style='width: 400px; float:left;'><strong>Release:</strong>&nbsp;" + historico.Release + "</div>";
+                itens += "        <div style='width: 300px; float:left;'><strong>Data:</strong>&nbsp; " + dia + "/" + mes + "/" + DataPublicacao.getFullYear() + " " + hora + "</div>";
+                itens += "        <div id='divStatus_" + historico.IdPublicacaoRelease + "' style='width: 400px; float:left;'><strong>Status:</strong>&nbsp;" + historico.PublicacaoStatus.Descricao + "</div>";
+                itens += "        <div style='clear:both;'></div>";
+                itens += "    </div>          ";
+                itens += "    <div style='margin-top: 5px;'>";
+                itens += "        <div style='width: 400px; float:left;'><strong>Item Publicado:</strong>&nbsp;" + historico.PastaOrigem + "</div>";
+                itens += "        <div style='width: 650px; float:left;'><strong>Caminho da publicação:</strong>&nbsp;" + historico.UnidadeDeDesenvolvimento.CaminhoPublish + "</div>";
+                itens += "        <div id='divTextoDetalhes_" + historico.IdPublicacaoRelease + "' class='divhover' style='float:left; text-decoration: inherit; font-style:italic; color: #0026ff; ' onclick='ExibirDetalhes(" + historico.IdPublicacaoRelease + ")'>Mais detalhes...</div>";
+                itens += "        <div style='clear:both;'></div>";
+                itens += "    </div>";
+                itens += "    <div id='divDetalhes_" + historico.IdPublicacaoRelease + "'  style='display:none;'>";
+                itens += "        <textarea style='width: 99%; height: 300px; margin-top: 5px;'>" + historico.Detalhes + "</textarea>";
+                itens += "    </div>  ";
+                itens += "</div>";
+                $("#divHistoricoPublish").empty();
+                $("#divHistoricoPublish").append(itens);
+            });
+        });
+    }
+
+
+    function ListarRelease(_caminho) {
+
+        $("#divPublish").empty();
+        $("#divRelease").empty();
+        $.getJSON('@Url.Action("ListarRelease")', { caminho: _caminho }, function (data) {
+            Release = data.Release;
+            $(data.Resultado).each(function (index, release) {
+                $("#divRelease").append("<div class='divReleaseModulo' style='margin: 5px; padding: 2px;' onclick=ListarPublish('" + release.Caminho + "','" + release.Nome + "')>" + release.Nome + "</div>");
+            });
+        });
+    }
+
+    function MudarPasta(nomePasta) {
+        
+        caminhoSelecionado += "\\" + nomePasta;
+        $("#divPublishDestinoPastas").empty();
+        $.getJSON('@Url.Action("MudarPasta")', { idUnidadeDesenvolvimento: $('#hdfIdUnidadeDesenvolvimento').val(), caminho: caminhoSelecionado }, function (data) {
+
+            caminhoSelecionado = data.Caminho;
+
+            $(data.Resultado).each(function (index, pasta) {
+                $("#divPublishDestinoPastas").append("<div id='divPublishDestinoPastaSelecionada' title='Duplo click para abrir a pasta' style='margin: 5px;' ondblclick=MudarPasta('" + pasta.Nome + "')><input type='radio' class='radioDiretorio' name='radioBoxPublish' value=" + pasta.Nome + " style='width:20px' />&nbsp;<img src='../Images/folder.png' />&nbsp;" + pasta.Nome + "</div>");
+            });
+        });
+    }
+
+    function ListarPublish(_caminho, _pasta) {
+        
+        $.getJSON('@Url.Action("ListarPublish")', { caminho: _caminho, pasta: _pasta }, function (data) {
+            pastaDoPublish = data.pastaOrigem;
+            caminhoDoPublish = data.caminhoDoPublish;
+            $("#divPublish").empty();
+            $("#divTituloPublish").empty();
+            $("#divTituloPublish").append("<div style='background: #d9d7d7; font-weight:bold; padding: 2px; margin: 5px; text-align:center;'>" + data.pastaOrigem + "</div>");
+            $(data.Resultado).each(function (index, Publish) {
+                if (Publish.Tipo == "Archive") {
+
+                    if (Publish.Nome == "Web.config" || Publish.Nome == "Web.Debug.config" || Publish.Nome == "Web.Release.config") {
+                        $("#divPublish").append("<div style = 'text-decoration:line-through; margin: 5px;'><input type='checkbox' class='checkboxArquivo' disabled='disabled'  value='" + Publish.Nome + "' />&nbsp;<img src='../Images/file.png' />&nbsp;" + Publish.Nome + "</div>");
+                    } else {
+                        $("#divPublish").append("<div style='margin: 5px;'><input type='checkbox' class='checkboxArquivo' checked='checked' value='" + Publish.Nome + "' />&nbsp;<img src='../Images/file.png' />&nbsp;" + Publish.Nome + "</div>");
+                    }
+
+                } else {
+                    $("#divPublish").append("<div style='margin: 5px;'><input type='checkbox' class='checkboxDiretorio' checked='checked' value='" + Publish.Nome + "' />&nbsp;<img src='../Images/folder.png' />&nbsp;" + Publish.Nome + "</div>");
+                }
+            });
+        });
+    }
+
+    function Publicar() {
+
+        var dirNaoSelecionados = "";
+        var arqNaoSelecionados = "";
+        var pastaFoiSelecionada = false;
+        var pastaSelecionada = "";
+
+
+        $(".checkboxArquivo").each(function () {
+            if (!this.checked) {
+                arqNaoSelecionados += this.value + ";";
+            }
+        }); 
+
+        $(".checkboxDiretorio").each(function () {
+
+            if (!this.checked) {
+                dirNaoSelecionados += this.value + ";";
+            }
+        });
+
+        $(".radioDiretorio").each(function () {
+
+            if (this.checked) {
+                pastaSelecionada = "\\" + this.value;
+                pastaFoiSelecionada = true;
+            }
+        });
+
+
+
+        if (pastaFoiSelecionada == false || caminhoDoPublish == "" || pastaDoPublish == "") {
+            alert("Favor selecionar o publish e o local que será publicado.");
+        } else {
+            $('#btnPublicar').val("Publicando...");
+            $('#btnPublicar').attr('disabled', 'disabled');
+
+            $.getJSON('@Url.Action("Publicar")', { caminhoOrigem: caminhoDoPublish, pastaOrigem: pastaDoPublish, caminhoDestino: caminhoSelecionado + pastaSelecionada, ArqNaoSelecionados: arqNaoSelecionados, DirNaoSelecionados: dirNaoSelecionados, IdUnidadeDesenvolvimento: $('#hdfIdUnidadeDesenvolvimento').val(), release: Release }, function (data) {
+                $(".radioDiretorio").each(function () {
+                    this.checked = false;
+                });
+
+                alert(data.Resultado);
+
+                AtualizarTela();
+
+                $('#btnPublicar').val("Publicar");
+                $('#btnPublicar').removeAttr('disabled');
+            });
+        }
+
+    }
+    $(function () {
+        $("#divReleases").selectable();
+        $("#divRelease").selectable();
+    });
+
+    function ExibirDetalhes(id) {
+        if (document.getElementById("divDetalhes_" + id).style.display == "none") {
+            document.getElementById("divDetalhes_" + id).style.display = "inline";
+            $("#divTextoDetalhes_" + id).empty();
+            $("#divTextoDetalhes_" + id).append("Ocultar detalhes");
+        }
+        else {
+            document.getElementById("divDetalhes_" + id).style.display = "none";
+            $("#divTextoDetalhes_" + id).empty();
+            $("#divTextoDetalhes_" + id).append("Mais detalhes...");
+        }
+    }
+</script>
+
+<h2>Release</h2>
+
+
+    <input id="hdfIdUnidadeDesenvolvimento" type="hidden" value="@ViewBag.IdUnidadeDesenvolvimento" />
+    <div style="width: 100%; font-size: 11px;">
+        <div style="width: 100%;">
+            <div style="float: right; margin-right: 25px;">
+                <input id="btnPublicar" name="btnPublicar" type="button" value="Publicar" title="Publicar" onclick="Publicar()" />
+            </div>
+            <div style="float: left;">
+                <div style="margin-top: 10px;">
+                    <div class="editor-label Esq">
+                        <label>Número do Ticket</label>
+                    </div>
+                    <div class="editor-field Esq5">@ViewBag.Ticket</div>
+                    <div class="editor-label Esq20">
+                        <label>Número da Solicitação</label>
+                    </div>
+                    <div class="editor-field Esq5">@ViewBag.Solicitacao</div>
+                    <div class="editor-label Esq20">
+                        <label>Projeto</label>
+                    </div>
+                    <div class="editor-field Esq5">@ViewBag.Projeto</div>
+                    <div class="editor-label Esq20">
+                        <label>Status</label>
+                    </div>
+                    <div class="editor-field Esq5">@ViewBag.Status</div>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        @*<div style="width: 100%; height: 15px; margin-top: -5px;" id="StatusDaTela"></div>*@
+    </div>
+    <div>
+        <div style="border: 1px solid #d9d7d7; background: #FFF; width: 220px; height: 410px; font-size: 11px; padding: 2px; float: left;">
+            <div style='background: #d9d7d7; font-weight: bold; padding: 2px; margin: 5px; text-align: center;'>Release</div>
+            <div id="divReleases" style="overflow-y: scroll; height: 380px;">
+                @foreach (var item in Model)
+                {
+                    if (item.BuildStatus == "Succeeded")
+                    {
+                    <div class="divRelease" onclick="ListarRelease('@item.Caminho')">
+                        <div style="width: 99%">
+                            <div style="float: left; height: 99%; padding-top: 5px;">
+                                <img src="../Images/ok_check_yes_tick_accept_success-16.png" title="Build Succeeded" />
+                            </div>
+                            <div style="float: left; height: 99%; margin-left: 5px; padding-top: 6px;">
+                                <div><strong>Data:</strong>&nbsp;@item.DataCriacao</div>
+                            </div>
+                            <div style="clear: both;"></div>
+                            <div style="height: 99%; margin-left: 1px;">
+                                <div><strong>Release:</strong>&nbsp;@item.Nome</div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    else
+                    {
+                    <div class="divRelease" onclick="$('#divRelease').empty();">
+                        <div style="width: 99%">
+                            <div  style="float: left; height: 99%; padding-top: 5px;">
+                                @if (item.BuildStatus == "Failed")
+                                {
+                                    <img src="~/Images/1384285306_list-remove.png" title="Build Failed" />
+                                }
+                                @if (item.BuildStatus == "InProgress")
+                                {
+                                    <img src="../Images/1384297048_player_play.png" title="Build InProgress" />
+                                }
+                            </div>
+                            <div style="float: left; height: 99%; margin-left: 5px; padding-top: 6px;">
+                                <div><strong>Data:</strong>&nbsp;@item.DataCriacao</div>
+                            </div>
+                            <div style="clear: both;"></div>
+                            <div style="height: 99%; margin-left: 1px;">
+                                <div><strong>Release:</strong>&nbsp;@item.Nome</div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                }
+            </div>
+        </div>
+        <div style="border: 1px solid #d9d7d7; width: 300px; font-size: 11px; height: 410px; float: left; margin-left: 5px; background: #FFF;">
+            <div id="divTituloRelease">
+                <div style='background: #d9d7d7; font-weight: bold; padding: 2px; margin: 5px; text-align: center;'>Módulo</div>
+            </div>
+            <div id="divRelease" style="overflow-y: scroll; height: 380px;"></div>
+        </div>
+        <div style="border: 1px solid #d9d7d7; width: 320px; height: 410px; font-size: 11px; float: left; margin-left: 5px; background: #FFF;">
+            <div id="divTituloPublish">
+                <div style='background: #d9d7d7; font-weight: bold; padding: 2px; margin: 5px; text-align: center;'>Publish</div>
+            </div>
+            <div id="divPublish" style="overflow-y: scroll; height: 380px;"></div>
+        </div>
+        <div id="divPublishDestino" style="border: 1px solid #d9d7d7; width: 320px; height: 410px; font-size: 11px; float: left; margin-left: 5px; background: #FFF;">
+            <div style='background: #d9d7d7; font-weight: bold; padding: 2px; margin: 5px; '>
+                <img src="~/Images/Voltar24.png" title="Voltar" onclick="MudarPasta('\\..')" width="14px" height="14px" style="margin-top: 1px;" /> 
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ambiente de Homologação</div>
+            <div id="divPublishDestinoPastas" style="overflow-y: scroll; height: 380px;">
+                @foreach (var item in ViewBag.Publish)
+                { 
+                    <div id="divPublishDestinoPastaSelecionada" title="Duplo click para abrir a pasta" style="margin: 5px;" ondblclick="MudarPasta('@item.Nome')"><input type="radio" class='radioDiretorio' name="radioBoxPublish" value="@item.Nome" style="width:20px" />&nbsp;<img src='../Images/folder.png' />&nbsp;@item.Nome</div>
+                }
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div>
+        <div style="width: 99%; margin-top: 10px; font-size: 1.3em; font-weight: bold; color: #888; font-style: italic;">
+            Histórico das Publicações:
+        </div>
+        <div id="divHistoricoPublish" style="font-size: 12px;">
+        @foreach (var item in ViewBag.HistoricoDePublicacao)
+        {
+            <div style="margin-top: 15px; border: 1px solid #d9d7d7; padding: 3px;">
+            <div>
+                <div id="divImgStatus_@item.IdPublicacaoRelease" style="width: 20px; float:left;">
+                @if (item.IdPublicacaoStatus == 1){ <img  src="~/Images/wait-16.png"/> }
+                @if (item.IdPublicacaoStatus == 2){ <img  src="~/Images/ajax-loader16.gif"/> }
+                @if (item.IdPublicacaoStatus == 3){ <img  src="~/Images/1384285306_list-remove.png"/>}
+                @if (item.IdPublicacaoStatus == 4){ <img  src="~/Images/1366345536_tick-circle-frame.png"/> }
+                </div>
+                <div style="width: 400px; float:left;"><strong>Release:</strong>&nbsp;@item.Release</div>
+                <div style="width: 300px; float:left;"><strong>Data:</strong>&nbsp;@item.DataInclusao</div>
+                <div id="divStatus_@item.IdPublicacaoRelease" style="width: 400px; float:left;"><strong>Status:</strong>&nbsp;@item.PublicacaoStatus.Descricao</div>
+                <div style="clear:both;"></div>
+            </div>          
+            <div style="margin-top: 5px;">
+                <div style="width: 400px; float:left;"><strong>Item Publicado:</strong>&nbsp;@item.PastaOrigem</div>
+                <div style="width: 650px; float:left;"><strong>Caminho da publicação:</strong>&nbsp;@item.UnidadeDeDesenvolvimento.CaminhoPublish@item.CaminhoDestino</div>
+                <div id="divTextoDetalhes_@item.IdPublicacaoRelease" class="divhover" style="float:left; text-decoration: inherit; font-style:italic; color: #0026ff; " onclick="ExibirDetalhes(@item.IdPublicacaoRelease);">Mais detalhes...</div>
+                <div style="clear:both;"></div>
+            </div>
+            <div id="divDetalhes_@item.IdPublicacaoRelease"  style="display:none;">
+                <textarea style="width: 99%; height: 300px; margin-top: 5px;">@item.Detalhes</textarea>
+            </div>  
+            </div>
+        }
+        </div>
+    </div>

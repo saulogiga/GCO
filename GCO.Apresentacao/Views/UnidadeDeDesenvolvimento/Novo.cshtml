@@ -1,0 +1,194 @@
+﻿@model GCO.Dominio.Entidade.UnidadeDeDesenvolvimento
+
+@{
+    ViewBag.Title = "DM - Unidade de Desenvolvimento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+
+    function AddBanco() {
+        var i = $('#ulBancos li').size();
+
+        if ($('#txtNomeBanco').val().trim() == "" || $('#ddlServidorBanco').val() == 0) {
+            alert("Informe os dados corretamente referente ao banco");
+        } else {
+            $("<li class='liBancos_" + i + "'><input type='text' readonly='true' id='NomeBanco_" + i + "' name='UnidadeDeDesenvolvimentoDeBanco[" + i + "].NomeBanco' value='" + $('#txtNomeBanco').val() + "' /><input type='hidden' id='IdServidorBanco_" + i + "' name='UnidadeDeDesenvolvimentoDeBanco[" + i + "].IdServidorBanco' value='" + $('#ddlServidorBanco').val() + "' /><a onclick='RemoveBanco(" + i + ");'><img src='../Images/basic1-173_close_remove_exit-16.png' width='16px' height='16px' /></a></li>").appendTo('#ulBancos');
+            $('#txtNomeBanco').val("");
+        }
+    }
+    function RemoveBanco(item) {
+        $('.liBancos_' + item).remove();
+
+        $("#ulBancos li").each(function (index, value) {
+            $('.' + value.getAttribute('class')).attr('class', 'liBancos_' + index);
+
+            $(".liBancos_" + index + " a").attr('onclick', "RemoveBanco(" + index + ");");
+
+            $(".liBancos_" + index + " input").each(function (index2, value2) {
+
+                if (value2.getAttribute('type') == 'text') {
+                    $('#' + value2.getAttribute('id')).attr('name', "UnidadeDeDesenvolvimentoDeBanco[" + index + "].NomeBanco");
+                    $('#' + value2.getAttribute('id')).attr('id', "NomeBanco_" + index);
+                } else if (value2.getAttribute('type') == 'hidden') {
+                    $('#' + value2.getAttribute('id')).attr('name', "UnidadeDeDesenvolvimentoDeBanco[" + index + "].IdServidorBanco");
+                    $('#' + value2.getAttribute('id')).attr('id', "IdServidorBanco_" + index);
+                }
+            });
+        });
+    }
+
+    function nomeDoBanco() {
+        if ($('#txtNomeBanco').val() == "") {
+            $('#txtNomeBanco').val("ENT_" + $('#NumeroTicket').val() + "_Homolog");
+        }
+    }
+    function nomeDoBuild() {
+        if ($('#NomeBuild').val() == "") {
+            $('#NomeBuild').val($('#NumeroTicket').val());
+        }
+    }
+    function nomeDoCaminhoPublish() {
+        if ($('#CaminhoPublish').val() == "") {
+            $('#CaminhoPublish').val("\\\\192.168.0.78\\e$\\WebSites\\" + "ENT_" + $('#NumeroTicket').val());
+        }
+    }
+    
+</script>
+
+@Html.ActionLink("Voltar", "Listar",null,new { @class = "BtnVoltar", title = "Voltar" })
+
+<h2>Criar Unidade de Desenvolvimento</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(false)
+
+
+    <fieldset>
+        <legend>Unidade de Desenvolvimento</legend>
+        <div>
+            <div class="Esq">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.IdTipoUnidadeDesenvolvimento)
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.IdTipoUnidadeDesenvolvimento, (SelectList)ViewBag.TipoDeUnidadeDeDesenvolvimento, "Selecione", new {  })
+                </div>
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.IdProjeto)
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.IdProjeto, (SelectList)ViewBag.Projeto, "Selecione", new {  })
+                </div>
+                
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.NumeroTicket)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.NumeroTicket)    
+                </div>
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.NumeroSolicitacao)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.NumeroSolicitacao)
+                </div>
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.IdSolicitante)
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.IdSolicitante, (SelectList)ViewBag.Solicitante, "Selecione", new {  })
+                </div>
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.IdStatusUnidadeDesenvolvimento)
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.IdStatusUnidadeDesenvolvimento, (SelectList)ViewBag.StatusDeUnidadeDeDesenvolvimento, new {  })
+                </div>
+            </div>
+            <div class="Esq50">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.TeamProject)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.TeamProject)
+                </div>
+                <div class="editor-label">
+                    <label>Servidor de banco de Dados</label>
+                </div>
+                <div class="editor-field">
+                    <select id="ddlServidorBanco" name="ddlServidorBanco" >
+                    <option value="0" selected="selected">Selecione</option>
+                    @foreach (var item in ViewBag.ServidorDeBanco)
+                    {
+                        <option value="@item.IdServidorBanco">@item.NomeServidor</option>
+                    }
+                    </select>
+                </div>
+                <div class="editor-label">
+                    <label>Nome do banco de Dados</label>
+                </div>
+                <div class="editor-field">
+                    <input id="txtNomeBanco" name="txtNomeBanco" <!--onclick="nomeDoBanco();-->" />
+                    <a style="cursor:pointer;" onclick="AddBanco();"><img  src="~/Images/basic1-171_add_new_plus-16.png" width="16px" height="16px" /></a>
+                </div>
+                <div class="editor-field">
+                    <ul id="ulBancos">
+                        @if (Model != null){
+                            for (int i = 0; i < Model.UnidadeDeDesenvolvimentoDeBanco.Count(); i++ )
+                            {
+                                <li class="liBancos_@i">
+                                    <input type="text" readonly="true" id="NomeBanco_@i" name="UnidadeDeDesenvolvimentoDeBanco[@i].NomeBanco" value="@Model.UnidadeDeDesenvolvimentoDeBanco.ToArray()[i].NomeBanco" />
+                                    <input type="hidden" id="IdServidorBanco_@i" name="UnidadeDeDesenvolvimentoDeBanco[@i].IdServidorBanco" value="@Model.UnidadeDeDesenvolvimentoDeBanco.ToArray()[i].IdServidorBanco" /><a onclick="RemoveBanco(@i);">
+                                    <img src="../Images/basic1-173_close_remove_exit-16.png" width="16px" height="16px" /></a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="Esq50">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.NomeBuild)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.NomeBuild, new { onclick="nomeDoBuild();" })
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.CaminhoPublish)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.CaminhoPublish , new { onclick="nomeDoCaminhoPublish();" })
+                </div>
+                <div class="editor-label">
+                    <label>Desenvolvedores:</label>
+                </div>
+                <div class="editor-label">
+                    <div style="padding: 5px; border: 1px solid #DDD; background: #FFF; overflow-y: scroll; height: 200px;">
+                    @foreach (var item in ViewBag.Desenvolvedores)
+                    {
+                        <input type="checkbox" id="chkDesenvolvedor_@item.UserId" value="@item.UserName" name="chkDesenvolvedor_@item.UserId" />  @item.UserName<br />
+                        
+                    }
+                    </div>
+                </div>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+        <p>
+            <input type="submit" value="Criar" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Voltar", "Listar")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
